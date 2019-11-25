@@ -9,3 +9,6 @@ class Settings():
         self.screen_height = 700
         self.screen_bg_color = (255, 255, 255) # white background
 
+        # Player settings.
+        self.player_speed = 5
+
