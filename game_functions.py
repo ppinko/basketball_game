@@ -9,7 +9,7 @@ def check_events():
         if event.type == pygame.QUIT:
             sys.exit()
 
-def update_screen(screen, bs):
+def update_screen(screen, bs, player):
     """Update screen"""
     
     # Redrawing screen background
@@ -18,5 +18,8 @@ def update_screen(screen, bs):
     # Checking events
     check_events()
     
+    # Bliting the player
+    player.blitme()
+
     # Refreshing screen
     pygame.display.flip()
