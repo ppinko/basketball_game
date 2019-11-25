@@ -24,18 +24,23 @@ class Player():
         self.center_x = float(self.rect.centerx)
         self.center_y = float(self.rect.centery)
 
+        # Set movement flags
+        self.move_left = False
+        self.move_right = False
+        self.move_up = False
+        self.move_down = False
+
     def blitme(self):
         """Draw the player at its current position"""
         self.screen.blit(self.image, self.rect)
 
-    def update(self):
+    def update(self, bs):
         """Update position of the player"""
-        for event in pygame.event.get():
-            if event.type == pygame.K_LEFT:
-                self.center_x -= bs.player_speed
-            elif event.type == pygame.K_RIGHT:
-                self.center_x += bs.player_speed
-            elif event.type == pygame.K_UP:
-                self.center_y -= bs.player_speed
-            elif event.type == pygame.K_DOWN:
-                self.center_y += bs.player_speed
+        if self.move_left == True:
+            self.rect.centerx -= bs.player_speed
+        if self.move_right == True:
+            self.rect.centerx += bs.player_speed
+        if self.move_up == True:
+            self.rect.centery -= bs.player_speed
+        if self.move_down == True:
+            self.rect.centery += bs.player_speed
