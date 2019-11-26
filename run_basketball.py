@@ -2,10 +2,14 @@
 
 import pygame
 import sys
+import random
+from pygame.sprite import Group # THAT MUST BE CHECKED
 
 from settings import Settings
 from player import Player
+from backboard import Backboard
 import game_functions as gf
+
 
 def run_basketball():
     """Initilizing the game"""
@@ -20,11 +24,16 @@ def run_basketball():
 
     # creating an instance of Player
     player = Player(screen, bs)
-
+    
+    # crating an instance of Backboard
+    backboards = Group()
+    # Bliting backboards
+    gf.create_backboard(screen, bs, backboards)
+    
     while True:
         """Main loop of the game"""
 
-        gf.update_screen(screen, bs, player) # Update the screen
+        gf.update_screen(screen, bs, player, backboards) # Update the screen
 
 run_basketball()
 

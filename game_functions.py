@@ -1,5 +1,7 @@
 import pygame
 import sys
+import random
+from backboard import Backboard
 
 def check_events(bs, player):
     """Collects and checks events"""    
@@ -36,7 +38,46 @@ def check_events_KEYUPS(event, bs, player):
     if event.key == pygame.K_DOWN:
         player.move_down = False
 
-def update_screen(screen, bs, player):
+def create_backboard(screen, bs, backboards):
+    """Generate backboards"""
+    # Establishing available place in x direction
+    min_x = int(bs.backboards_width/2 + 10)
+    max_x = int(bs.screen_width - bs.backboards_width/2 - 10)
+    
+    # Establishing available place in q direction
+    min_y = int(bs.backboards_height/2 + 10)
+    max_y = int(bs.screen_height - bs.backboards_height/2 - 10)
+
+    # Generating random positions
+    backboard_positions = []
+    for backboard in range(int(bs.backboards_number/2)):
+        backboard_positions.append(random.randint(min_x, max_x))
+        backboard_positions.append(random.randint(min_y, max_y))
+
+    for index in range(bs.backboards_number):
+        if index % 4 == 0:
+            backboard = Backboard(screen, bs)
+            backboard.rect.centerx = backboard_positions[index]
+            backboard.rect.centery = max_y
+            backboards.add(backboard)
+        elif index % 4 == 1:
+            backboard = Backboard(screen, bs)
+            backboard.rect.centery = backboard_positions[index]
+            backboard.rect.centerx = max_x 
+            backboards.add(backboard)
+        elif index % 4 == 2:
+            backboard = Backboard(screen, bs)
+            backboard.rect.centerx = backboard_positions[index]
+            backboard.rect.centery = min_y 
+            backboards.add(backboard)
+        elif index % 4 == 3:
+            backboard = Backboard(screen, bs)
+            backboard.rect.centery = backboard_positions[index] 
+            backboard.rect.centerx = min_x
+            backboards.add(backboard)
+    
+
+def update_screen(screen, bs, player, backboards):
     """Update screen"""
     # Redrawing screen background
     screen.fill(bs.screen_bg_color)
@@ -49,6 +90,9 @@ def update_screen(screen, bs, player):
 
     # Bliting the player
     player.blitme()
+    
+    # Bliting all backboards
+    backboards.draw(screen)
 
     # Refreshing screen
     pygame.display.flip()
