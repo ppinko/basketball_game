@@ -77,7 +77,7 @@ def create_backboard(screen, bs, backboards):
             backboards.add(backboard)
     
 
-def update_screen(screen, bs, player, backboards):
+def update_screen(screen, bs, player, backboards, ball):
     """Update screen"""
     # Redrawing screen background
     screen.fill(bs.screen_bg_color)
@@ -91,6 +91,9 @@ def update_screen(screen, bs, player, backboards):
     # Bliting the player
     player.blitme()
     
+    # Blittin the ball
+    ball.blitme()
+
     # Bliting all backboards
     backboards.draw(screen)
 
