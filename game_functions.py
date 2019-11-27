@@ -47,6 +47,12 @@ def check_number_balls(balls, bs):
     else:
         return False
 
+def update_balls_number(screen, bs, balls):
+    """Removing balls that hit backboards or hit the edge of the screen"""
+    for ball in balls.copy():
+        if ball.rect.top <= 0 or ball.rect.top >= bs.screen_height or ball.rect.left <= 0 or ball.rect.right >= bs.screen_width:
+            balls.remove(ball)
+                
 def check_events_KEYUPS(event, bs, player):
     """Check key releases"""
     if event.key == pygame.K_LEFT:
@@ -114,6 +120,7 @@ def update_screen(screen, bs, player, backboards, balls):
     # Blittin the balls
     balls.update(bs)
     balls.draw(screen)
+    update_balls_number(screen, bs, balls)
 
     # Bliting all backboards
     backboards.draw(screen)
