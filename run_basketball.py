@@ -29,8 +29,8 @@ def run_basketball():
     # creating an instance of Backboard
     backboards = Group()
     
-    # creating a ball
-    ball = Ball(screen, bs)
+    # creating a group of balls
+    balls = Group()
     
     # Bliting backboards
     gf.create_backboard(screen, bs, backboards)
@@ -38,7 +38,7 @@ def run_basketball():
     while True:
         """Main loop of the game"""
 
-        gf.update_screen(screen, bs, player, backboards, ball) # Update the screen
+        gf.update_screen(screen, bs, player, backboards, balls) # Update the screen
 
 run_basketball()
 

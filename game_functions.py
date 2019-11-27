@@ -2,19 +2,20 @@ import pygame
 import sys
 import random
 from backboard import Backboard
+from ball import Ball
 
-def check_events(bs, player):
+def check_events(screen, bs, player, balls):
     """Collects and checks events"""    
     for event in pygame.event.get():
         # Enables to close the game while clicking on the 'x'
         if event.type == pygame.QUIT:
             sys.exit() 
         elif event.type == pygame.KEYDOWN:
-            check_events_KEYDOWNS(event, bs, player)
+            check_events_KEYDOWNS(event, screen, bs, player, balls)
         elif event.type == pygame.KEYUP:
             check_events_KEYUPS(event, bs, player)
 
-def check_events_KEYDOWNS(event, bs, player):
+def check_events_KEYDOWNS(event, screen, bs, player, balls):
     """Check key presses"""
     if event.key == pygame.K_q:
         sys.exit()
@@ -26,6 +27,25 @@ def check_events_KEYDOWNS(event, bs, player):
         player.move_up = True
     if event.key == pygame.K_DOWN:
         player.move_down = True
+    if event.key == pygame.K_w and check_number_balls(balls, bs):
+        new_ball = Ball(screen, bs, 'up', player)
+        balls.add(new_ball)
+    if event.key == pygame.K_s and check_number_balls(balls, bs):
+        new_ball = Ball(screen, bs, 'down', player)
+        balls.add(new_ball)
+    if event.key == pygame.K_d and check_number_balls(balls, bs):
+        new_ball = Ball(screen, bs, 'right', player)
+        balls.add(new_ball)
+    if event.key == pygame.K_a and check_number_balls(balls, bs):
+        new_ball = Ball(screen, bs, 'left', player)
+        balls.add(new_ball)
+
+def check_number_balls(balls, bs):
+    """Checking active balls"""
+    if len(balls) < bs.ball_limit:
+        return True
+    else:
+        return False
 
 def check_events_KEYUPS(event, bs, player):
     """Check key releases"""
@@ -77,13 +97,13 @@ def create_backboard(screen, bs, backboards):
             backboards.add(backboard)
     
 
-def update_screen(screen, bs, player, backboards, ball):
+def update_screen(screen, bs, player, backboards, balls):
     """Update screen"""
     # Redrawing screen background
     screen.fill(bs.screen_bg_color)
     
     # Checking events
-    check_events(bs, player)
+    check_events(screen, bs, player, balls)
     
     # Updating position of the player
     player.update(bs)
@@ -91,8 +111,9 @@ def update_screen(screen, bs, player, backboards, ball):
     # Bliting the player
     player.blitme()
     
-    # Blittin the ball
-    ball.blitme()
+    # Blittin the balls
+    balls.update(bs)
+    balls.draw(screen)
 
     # Bliting all backboards
     backboards.draw(screen)

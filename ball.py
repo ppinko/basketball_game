@@ -1,14 +1,15 @@
 import pygame
 from pygame.sprite import Sprite
 
-class Ball():
+class Ball(Sprite):
 
-    def __init__(self, screen, bs):
+    def __init__(self, screen, bs, direction, player):
         """Initilizing the ball and setting its position"""
         super(Ball, self).__init__()
         self.screen = screen
         self.screen_rect = screen.get_rect()
         self.bs = bs
+        self.direction = direction
         
         # Load the ball image and get its rect.
         self.image = pygame.image.load('images/ball.png')
@@ -18,18 +19,8 @@ class Ball():
         self.rect = self.image.get_rect()
         
         # Setting initial position of the ball to the middle of the screen
-        self.rect.centerx = self.screen_rect.centerx
-        self.rect.centery = self.screen_rect.centery
-        
-        # Store the decimal value of the ball's position
-        self.center_x = float(self.rect.centerx)
-        self.center_y = float(self.rect.centery)
-
-        # Set movement flags
-        self.move_left = False
-        self.move_right = False
-        self.move_up = False
-        self.move_down = False
+        self.rect.centerx = player.rect.centerx
+        self.rect.centery = player.rect.centery
 
     def blitme(self):
         """Draw the ball at its current position"""
@@ -37,11 +28,13 @@ class Ball():
 
     def update(self, bs):
         """Update position of the ball"""
-        if self.move_left == True:
+        if self.direction == 'left':
             self.rect.centerx -= bs.ball_speed
-        if self.move_right == True:
+        elif self.direction == 'right':
             self.rect.centerx += bs.ball_speed
-        if self.move_up == True:
+        elif self.direction == 'up':
             self.rect.centery -= bs.ball_speed
-        if self.move_down == True:
+        elif self.direction == 'down':
             self.rect.centery += bs.ball_speed
+
+            
