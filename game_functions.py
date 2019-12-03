@@ -1,6 +1,8 @@
 import pygame
 import sys
 import random
+import math
+
 from backboard import Backboard
 from ball import Ball
 
@@ -109,7 +111,35 @@ def remove_backboards(backboards, balls):
     """Remove the backboards which were hit by ball"""
     collisions = pygame.sprite.groupcollide(balls, backboards, True, True)
 
-def update_screen(screen, bs, player, backboards, balls):
+def check_backboards(backboards):
+    """Checking number of backboards"""
+    if len(backboards) == 0:
+        return True
+    else:
+        return False
+
+def next_level(screen, bs, backboards):
+    """Inceasing game level"""
+    if check_backboards(backboards):
+        create_backboard(screen, bs, backboards)
+    else:
+        pass
+
+def show_time(screen, bs, clock, timer):
+    seconds = clock.tick() / 1000.0
+    timer += seconds
+    print(timer)
+    displaytimer = math.trunc(timer)
+    timefont = pygame.font.SysFont('Arial', 12)
+    timertext = timefont.render(str(displaytimer), True, bs.text_color, 
+            bs.screen_bg_color)
+    timertext_image = timertext.get_rect()
+    timertext_image.top = 10
+    timertext_image.left = 10
+    screen.blit(timertext, timertext_image)
+    return timer 
+
+def update_screen(screen, bs, player, backboards, balls, clock, timer):
     """Update screen"""
     # Redrawing screen background
     screen.fill(bs.screen_bg_color)
@@ -130,7 +160,11 @@ def update_screen(screen, bs, player, backboards, balls):
 
     # Bliting all backboards
     remove_backboards(backboards, balls)
+    next_level(screen, bs, backboards)
     backboards.draw(screen)
     
+    # Blitting timer
+    show_time(screen, bs, clock, timer)
+
     # Refreshing screen
     pygame.display.flip()

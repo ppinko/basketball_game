@@ -24,3 +24,10 @@ class Settings():
         self.ball_width = 40
         self.ball_height = 40
         self.ball_limit = 4
+
+        # Text settings
+        self.text_color = (0, 255, 0)        
+
+        # Time settings.
+        self.time = 10
+        
