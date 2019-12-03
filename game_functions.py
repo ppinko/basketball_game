@@ -121,25 +121,11 @@ def check_backboards(backboards):
 def next_level(screen, bs, backboards):
     """Inceasing game level"""
     if check_backboards(backboards):
-        create_backboard(screen, bs, backboards)
+       create_backboard(screen, bs, backboards)
     else:
         pass
-
-def show_time(screen, bs, clock, timer):
-    seconds = clock.tick() / 1000.0
-    timer += seconds
-    print(timer)
-    displaytimer = math.trunc(timer)
-    timefont = pygame.font.SysFont('Arial', 12)
-    timertext = timefont.render(str(displaytimer), True, bs.text_color, 
-            bs.screen_bg_color)
-    timertext_image = timertext.get_rect()
-    timertext_image.top = 10
-    timertext_image.left = 10
-    screen.blit(timertext, timertext_image)
-    return timer 
-
-def update_screen(screen, bs, player, backboards, balls, clock, timer):
+ 
+def update_screen(screen, bs, player, backboards, balls, timer):
     """Update screen"""
     # Redrawing screen background
     screen.fill(bs.screen_bg_color)
@@ -164,7 +150,8 @@ def update_screen(screen, bs, player, backboards, balls, clock, timer):
     backboards.draw(screen)
     
     # Blitting timer
-    show_time(screen, bs, clock, timer)
+    timer.update_timer()
+    timer.blitme(bs, screen)
 
     # Refreshing screen
     pygame.display.flip()
