@@ -23,6 +23,3 @@ class Backboard(Sprite):
         self.rect.top = self.screen_rect.top
         self.rect.centerx = self.screen_rect.centerx
         
-    def blitme(self):
-        """Draw the backboard at its current position"""
-        self.screen.blit(self.image, self.rect)

@@ -67,12 +67,14 @@ def check_events_KEYUPS(event, bs, player):
 def create_backboard(screen, bs, backboards):
     """Generate backboards"""
     # Establishing available place in x direction
-    min_x = int(bs.backboards_width/2 + 10)
-    max_x = int(bs.screen_width - bs.backboards_width/2 - 10)
+    min_x = int(3 * bs.backboards_width/2 + bs.player_width/2 + 50)
+    max_x = int(bs.screen_width - 3*bs.backboards_width/2 - 
+            bs.player_width/2 - 50)
     
     # Establishing available place in q direction
-    min_y = int(bs.backboards_height/2 + 10)
-    max_y = int(bs.screen_height - bs.backboards_height/2 - 10)
+    min_y = int(3*bs.backboards_height/2 + bs.player_height/2 + 50)
+    max_y = int(bs.screen_height - 3*bs.backboards_height/2 - 
+            bs.player_height - 50)
 
     # Generating random positions
     backboard_positions = []
@@ -84,24 +86,28 @@ def create_backboard(screen, bs, backboards):
         if index % 4 == 0:
             backboard = Backboard(screen, bs)
             backboard.rect.centerx = backboard_positions[index]
-            backboard.rect.centery = max_y
+            backboard.rect.bottom = bs.screen_height - 25
             backboards.add(backboard)
+
         elif index % 4 == 1:
             backboard = Backboard(screen, bs)
             backboard.rect.centery = backboard_positions[index]
-            backboard.rect.centerx = max_x 
+            backboard.rect.right = bs.screen_width - 25
             backboards.add(backboard)
         elif index % 4 == 2:
             backboard = Backboard(screen, bs)
             backboard.rect.centerx = backboard_positions[index]
-            backboard.rect.centery = min_y 
+            backboard.rect.top = 25
             backboards.add(backboard)
         elif index % 4 == 3:
             backboard = Backboard(screen, bs)
             backboard.rect.centery = backboard_positions[index] 
-            backboard.rect.centerx = min_x
+            backboard.rect.left = 25
             backboards.add(backboard)
     
+def remove_backboards(backboards, balls):
+    """Remove the backboards which were hit by ball"""
+    collisions = pygame.sprite.groupcollide(balls, backboards, True, True)
 
 def update_screen(screen, bs, player, backboards, balls):
     """Update screen"""
@@ -123,7 +129,8 @@ def update_screen(screen, bs, player, backboards, balls):
     update_balls_number(screen, bs, balls)
 
     # Bliting all backboards
+    remove_backboards(backboards, balls)
     backboards.draw(screen)
-
+    
     # Refreshing screen
     pygame.display.flip()
