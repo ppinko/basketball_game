@@ -28,7 +28,7 @@ class Timer():
     def blitme(self, bs, screen):
         """Blit timer on the screen"""
         timefont = pygame.font.SysFont('Arial', 20, bold=True)
-        timertext = timefont.render(str(self.time_left), True, 
+        timertext = timefont.render("Time [s] {}".format(self.time_left), True, 
                 bs.text_color, bs.screen_bg_color)
         timertext_image = timertext.get_rect()
         timertext_image.top = 10
@@ -37,6 +37,53 @@ class Timer():
 
 class Scoreboard():
     """Tracks the score"""
+    
+    def __init__(self, bs, screen):
+        """Initialize variables"""
+        
+        # Screen
+        self.screen = screen
+        self.screen_rect = self.screen.get_rect()
+
+        # Basketball settings
+        self.bs = bs
+
+        # Font
+        self.font = pygame.font.SysFont('Arial', 20, bold=True)
+
+    def blitme(self, bs, screen):
+        """Blit timer on the screen"""
+        self.text = self.font.render("Score {}".format(bs.score), True, 
+                bs.text_color, bs.screen_bg_color)
+        self.text_image = self.text.get_rect()
+        self.text_image.top = 40
+        self.text_image.left = 10
+        screen.blit(self.text, self.text_image)
+
+class Level():
+    """Tracks the level"""
+    
+    def __init__(self, bs, screen):
+        """Initialize variables"""
+        
+        # Screen
+        self.screen = screen
+        self.screen_rect = self.screen.get_rect()
+
+        # Basketball settings
+        self.bs = bs
+
+        # Font
+        self.font = pygame.font.SysFont('Arial', 20, bold=True)
+
+    def blitme(self, bs, screen):
+        """Blit timer on the screen"""
+        self.text = self.font.render("Level {}".format(bs.level), True, 
+                bs.text_color, bs.screen_bg_color)
+        self.text_image = self.text.get_rect()
+        self.text_image.top = 70
+        self.text_image.left = 10
+        screen.blit(self.text, self.text_image)
 
 class Button():
     """Start button"""

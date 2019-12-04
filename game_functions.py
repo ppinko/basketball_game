@@ -134,9 +134,14 @@ def create_backboard(screen, bs, backboards):
             backboard.rect.left = 25
             backboards.add(backboard)
     
-def remove_backboards(backboards, balls):
+def remove_backboards(backboards, balls, bs):
     """Remove the backboards which were hit by ball"""
     collisions = pygame.sprite.groupcollide(balls, backboards, True, True)
+    
+    # Adding points
+    if collisions:
+        for key in collisions.keys():
+            bs.update_score()
 
 def check_backboards(backboards):
     """Checking number of backboards"""
@@ -145,11 +150,13 @@ def check_backboards(backboards):
     else:
         return False
 
-def next_level(screen, bs, backboards):
+def next_level(screen, bs, backboards, timer):
     """Inceasing game level"""
     if check_backboards(backboards):
        create_backboard(screen, bs, backboards)
        bs.reset_mistakes()
+       timer.reset_clock()
+       bs.level_up()
     else:
         pass
  
@@ -166,6 +173,8 @@ def restart_game(timer, bs, screen, backboards, balls, player):
         bs.game_active = False
         backboards.empty()
         balls.empty()
+        bs.reset_score()
+        bs.reset_level()
         create_backboard(screen, bs, backboards)
         player.restart(bs)
         bs.ball_mistakes_limit = bs.mistakes_limit
@@ -182,16 +191,17 @@ def player_update(player, bs):
     """Update position of the player"""
     player.update(bs)
 
-def backboards_update(screen, bs, backboards, balls):
+def backboards_update(screen, bs, backboards, balls, timer):
     """Update position of all backboard"""
     
     # Remove backboards which were hit by ball
-    remove_backboards(backboards, balls)
+    remove_backboards(backboards, balls, bs)
     
     # Level up if no more backboards
-    next_level(screen, bs, backboards)
+    next_level(screen, bs, backboards, timer)
 
-def update_screen(screen, bs, player, backboards, balls, timer, game_button):
+def update_screen(screen, bs, player, backboards, balls, timer, game_button,
+        scoreboard, level):
     """Update screen"""
 
     # Redrawing screen background
@@ -213,11 +223,18 @@ def update_screen(screen, bs, player, backboards, balls, timer, game_button):
     timer.update_timer()
     timer.countdown(bs)
     timer.blitme(bs, screen)
+    
+    # Blitting score
+    scoreboard.blitme(bs, screen)
+
+    # Blitting score
+    level.blitme(bs, screen)
 
     # Restart game when loses
     restart_game(timer, bs, screen, backboards, balls, player)
     
     if not bs.game_active:
+        timer.reset_clock()
         game_button.draw_button()
 
     # Refreshing screen

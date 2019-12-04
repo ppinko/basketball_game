@@ -9,7 +9,7 @@ from settings import Settings
 from player import Player
 from backboard import Backboard
 from ball import Ball
-from texts import Timer, Button
+from texts import Timer, Button, Scoreboard, Level
 import game_functions as gf
 
 
@@ -27,6 +27,12 @@ def run_basketball():
     # create an instance of Timer
     timer = Timer(bs, screen)
 
+    # create a scoreboard
+    scoreboard = Scoreboard(bs, screen)
+
+    # create a level
+    level = Level(bs, screen)
+    
     # creating an instance of Player
     player = Player(screen, bs)
     
@@ -38,8 +44,7 @@ def run_basketball():
     
     # Bliting backboards
     gf.create_backboard(screen, bs, backboards)
-    
-    
+     
     # creating a game button
     game_button = Button(bs, screen)
     
@@ -51,10 +56,10 @@ def run_basketball():
         if bs.game_active:
             gf.player_update(player, bs)
             gf.balls_update(screen, balls, bs)
-            gf.backboards_update(screen, bs, backboards, balls)
+            gf.backboards_update(screen, bs, backboards, balls, timer)
 
         gf.update_screen(screen, bs, player, backboards, balls, timer, 
-                game_button) # Update the screen
+                game_button, scoreboard, level) # Update the screen
 
 
 run_basketball()

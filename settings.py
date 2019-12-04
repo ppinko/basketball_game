@@ -43,6 +43,27 @@ class Settings():
         # Game settings
         self.game_active = False
 
+        # Scoreboard settings
+        self.score = 0
+        self.points_hit = 50
+        self.level = 1
+
+    def level_up(self):
+        """Updates the score"""
+        self.level += 1
+    
+    def reset_level(self):
+        """Reset the score after game over"""
+        self.level = 1
+
+    def update_score(self):
+        """Updates the score"""
+        self.score += self.points_hit
+    
+    def reset_score(self):
+        """Reset the score after game over"""
+        self.score = 0
+
     def reset_mistakes(self):
         """Reset number of mistakes to initial value"""
         self.ball_mistakes_limit = self.mistakes_limit
