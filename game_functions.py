@@ -6,15 +6,23 @@ import math
 from backboard import Backboard
 from ball import Ball
 
-def check_events(screen, bs, player, balls):
+def check_events(screen, bs, player, balls, game_button):
     """Collects and checks events"""    
     for event in pygame.event.get():
         # Enables to close the game while clicking on the 'x'
         if event.type == pygame.QUIT:
             sys.exit() 
-        elif event.type == pygame.KEYDOWN:
+        
+        # Mouse clicks
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # gather position of the click
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_game_button(game_button, mouse_x, mouse_y, bs)
+
+        # Keyboards presses
+        if event.type == pygame.KEYDOWN:
             check_events_KEYDOWNS(event, screen, bs, player, balls)
-        elif event.type == pygame.KEYUP:
+        if event.type == pygame.KEYUP:
             check_events_KEYUPS(event, bs, player)
 
 def check_events_KEYDOWNS(event, screen, bs, player, balls):
@@ -23,7 +31,7 @@ def check_events_KEYDOWNS(event, screen, bs, player, balls):
     # Game exit
     if event.key == pygame.K_q:
         sys.exit()
-
+    
     # Player movement
     if event.key == pygame.K_LEFT:
         player.move_left = True
@@ -58,6 +66,17 @@ def check_events_KEYUPS(event, bs, player):
         player.move_up = False
     if event.key == pygame.K_DOWN:
         player.move_down = False
+
+def check_game_button(game_button, mouse_x, mouse_y, bs):
+    """Check when player cliks start"""
+    button_clicked = game_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked:
+        # Start the game
+        bs.game_active = True
+
+        # Hide the mouse coursor
+        pygame.mouse.set_visible(False)
+
 
 def check_number_balls(balls, bs):
     """Checking active balls"""
@@ -159,11 +178,12 @@ def backboards_update(screen, bs, backboards, balls):
     # Level up if no more backboards
     next_level(screen, bs, backboards)
 
-def update_screen(screen, bs, player, backboards, balls, timer):
+def update_screen(screen, bs, player, backboards, balls, timer, game_button):
     """Update screen"""
+
     # Redrawing screen background
     screen.fill(bs.screen_bg_color)
-
+    
     # Bliting the player
     player.blitme()
     
@@ -180,6 +200,9 @@ def update_screen(screen, bs, player, backboards, balls, timer):
     timer.update_timer()
     timer.countdown(bs)
     timer.blitme(bs, screen)
+
+    if not bs.game_active:
+        game_button.draw_button()
 
     # Refreshing screen
     pygame.display.flip()

@@ -37,8 +37,11 @@ class Settings():
         self.button_bg_color = (0, 255, 0)
         self.button_text = "Start game"
 
-        # Time settings.
+        # Time settings
         self.time_limit = 10
+
+        # Game settings
+        self.game_active = False
 
     def reset_mistakes(self):
         """Reset number of mistakes to initial value"""

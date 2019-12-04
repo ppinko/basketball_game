@@ -49,14 +49,14 @@ class Button():
         self.screen_height = bs.screen_height
         
         # Copying settings from settings.py
-        self.width = bs.buton_width
+        self.width = bs.button_width
         self.height = bs.button_width
         self.text_color = bs.button_text_color
         self.bg_color = bs.button_bg_color
         self.text = bs.button_text
 
         # Creating font
-        self.font = pygame.SysFont("Arial", 30, bold = True)
+        self.font = pygame.font.SysFont("Arial", 30, bold = True)
 
         # Create button background
         self.rect = pygame.Rect(0, 0, self.width, self.height)
@@ -76,4 +76,4 @@ class Button():
         """Draw button with text"""
 
         self.screen.fill(self.bg_color, self.rect)
-        self.screen.blit(self.text_rect, self.text_color)
+        self.screen.blit(self.text, self.text_rect)
