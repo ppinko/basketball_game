@@ -13,6 +13,7 @@ class Timer():
     def reset_clock(self):
         """Reseting clock"""
         self.clock = pygame.time.Clock()
+        self.timer = 0
 
     def update_timer(self):
         """Update timer"""

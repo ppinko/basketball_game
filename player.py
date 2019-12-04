@@ -53,4 +53,9 @@ class Player():
         if self.move_down == True and self.rect.bottom <= self.max_y:
             self.rect.centery += bs.player_speed
 
+    def restart(self, bs):
+        """When loosing a game restarts position of player"""
+        self.rect.centerx = self.screen_rect.centerx
+        self.rect.centery = self.screen_rect.centery
+
 

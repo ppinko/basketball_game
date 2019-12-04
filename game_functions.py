@@ -5,6 +5,7 @@ import math
 
 from backboard import Backboard
 from ball import Ball
+from texts import Timer
 
 def check_events(screen, bs, player, balls, game_button):
     """Collects and checks events"""    
@@ -157,7 +158,19 @@ def lost_game(timer, bs, screen):
 
     # Time limit
     if timer.time_left <= 0 or bs.ball_mistakes_limit <= 0:
-        pass    
+        return True
+
+def restart_game(timer, bs, screen, backboards, balls, player):
+    "Actions to take to restart the game"
+    if lost_game(timer, bs, screen):
+        bs.game_active = False
+        backboards.empty()
+        balls.empty()
+        create_backboard(screen, bs, backboards)
+        player.restart(bs)
+        bs.ball_mistakes_limit = bs.mistakes_limit
+        timer.reset_clock()
+        pygame.mouse.set_visible(True)
 
 def balls_update(screen, balls, bs):
     """Update balls positions and number"""
@@ -201,6 +214,9 @@ def update_screen(screen, bs, player, backboards, balls, timer, game_button):
     timer.countdown(bs)
     timer.blitme(bs, screen)
 
+    # Restart game when loses
+    restart_game(timer, bs, screen, backboards, balls, player)
+    
     if not bs.game_active:
         game_button.draw_button()
 
