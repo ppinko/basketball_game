@@ -39,8 +39,17 @@ def run_basketball():
     # Bliting backboards
     gf.create_backboard(screen, bs, backboards)
     
+    game_flag = True
+
     while True:
         """Main loop of the game"""
+        
+        gf.check_events(screen, bs, player, balls)
+
+        if game_flag:
+            gf.player_update(player, bs)
+            gf.balls_update(screen, balls, bs)
+            gf.backboards_update(screen, bs, backboards, balls)
 
         gf.update_screen(screen, bs, player, backboards, balls, timer) # Update the screen
 

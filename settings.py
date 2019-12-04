@@ -24,10 +24,22 @@ class Settings():
         self.ball_width = 40
         self.ball_height = 40
         self.ball_limit = 4
+        self.mistakes_limit = 3
+        self.ball_mistakes_limit = self.mistakes_limit
 
         # Text settings
-        self.text_color = (0, 255, 0)        
+        self.text_color = (0, 0, 0)
+
+        # Button settings
+        self.button_width = 100
+        self.button_height = 50
+        self.button_text_color = (255, 0, 0)
+        self.button_bg_color = (0, 255, 0)
+        self.button_text = "Start game"
 
         # Time settings.
-        self.time = 10
-        
+        self.time_limit = 10
+
+    def reset_mistakes(self):
+        """Reset number of mistakes to initial value"""
+        self.ball_mistakes_limit = self.mistakes_limit

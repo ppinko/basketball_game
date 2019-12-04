@@ -19,8 +19,12 @@ def check_events(screen, bs, player, balls):
 
 def check_events_KEYDOWNS(event, screen, bs, player, balls):
     """Check key presses"""
+
+    # Game exit
     if event.key == pygame.K_q:
         sys.exit()
+
+    # Player movement
     if event.key == pygame.K_LEFT:
         player.move_left = True
     if event.key == pygame.K_RIGHT:
@@ -29,6 +33,8 @@ def check_events_KEYDOWNS(event, screen, bs, player, balls):
         player.move_up = True
     if event.key == pygame.K_DOWN:
         player.move_down = True
+
+    # Shooting a ball
     if event.key == pygame.K_w and check_number_balls(balls, bs):
         new_ball = Ball(screen, bs, 'up', player)
         balls.add(new_ball)
@@ -42,19 +48,6 @@ def check_events_KEYDOWNS(event, screen, bs, player, balls):
         new_ball = Ball(screen, bs, 'left', player)
         balls.add(new_ball)
 
-def check_number_balls(balls, bs):
-    """Checking active balls"""
-    if len(balls) < bs.ball_limit:
-        return True
-    else:
-        return False
-
-def update_balls_number(screen, bs, balls):
-    """Removing balls that hit backboards or hit the edge of the screen"""
-    for ball in balls.copy():
-        if ball.rect.top <= 0 or ball.rect.top >= bs.screen_height or ball.rect.left <= 0 or ball.rect.right >= bs.screen_width:
-            balls.remove(ball)
-                
 def check_events_KEYUPS(event, bs, player):
     """Check key releases"""
     if event.key == pygame.K_LEFT:
@@ -65,6 +58,20 @@ def check_events_KEYUPS(event, bs, player):
         player.move_up = False
     if event.key == pygame.K_DOWN:
         player.move_down = False
+
+def check_number_balls(balls, bs):
+    """Checking active balls"""
+    if len(balls) < bs.ball_limit:
+        return True
+    else:
+        return False
+
+def update_balls_number(screen, bs, balls):
+    """Removing balls that hit the edge of the screen"""
+    for ball in balls.copy():
+        if ball.rect.top <= 0 or ball.rect.top >= bs.screen_height or ball.rect.left <= 0 or ball.rect.right >= bs.screen_width:
+            balls.remove(ball)
+            bs.ball_mistakes_limit -= 1
 
 def create_backboard(screen, bs, backboards):
     """Generate backboards"""
@@ -122,35 +129,56 @@ def next_level(screen, bs, backboards):
     """Inceasing game level"""
     if check_backboards(backboards):
        create_backboard(screen, bs, backboards)
+       bs.reset_mistakes()
     else:
         pass
  
+def lost_game(timer, bs, screen):
+    """Definies conditions when player loses the game"""
+
+    # Time limit
+    if timer.time_left <= 0 or bs.ball_mistakes_limit <= 0:
+        pass    
+
+def balls_update(screen, balls, bs):
+    """Update balls positions and number"""
+
+    balls.update(bs)
+    update_balls_number(screen, bs, balls)
+
+def player_update(player, bs):
+    """Update position of the player"""
+    player.update(bs)
+
+def backboards_update(screen, bs, backboards, balls):
+    """Update position of all backboard"""
+    
+    # Remove backboards which were hit by ball
+    remove_backboards(backboards, balls)
+    
+    # Level up if no more backboards
+    next_level(screen, bs, backboards)
+
 def update_screen(screen, bs, player, backboards, balls, timer):
     """Update screen"""
     # Redrawing screen background
     screen.fill(bs.screen_bg_color)
-    
-    # Checking events
-    check_events(screen, bs, player, balls)
-    
-    # Updating position of the player
-    player.update(bs)
 
     # Bliting the player
     player.blitme()
     
-    # Blittin the balls
-    balls.update(bs)
+    # Drawing the balls
     balls.draw(screen)
-    update_balls_number(screen, bs, balls)
 
-    # Bliting all backboards
-    remove_backboards(backboards, balls)
-    next_level(screen, bs, backboards)
+    # Drawing the backboards
     backboards.draw(screen)
     
+    # Checking if the player didn't lose the game
+    lost_game(timer, bs, screen)
+
     # Blitting timer
     timer.update_timer()
+    timer.countdown(bs)
     timer.blitme(bs, screen)
 
     # Refreshing screen
