@@ -56,7 +56,7 @@ def run_basketball():
         if bs.game_active:
             gf.player_update(player, bs)
             gf.balls_update(screen, balls, bs)
-            gf.backboards_update(screen, bs, backboards, balls, timer)
+            gf.backboards_update(screen, bs, backboards, balls, timer, player)
 
         gf.update_screen(screen, bs, player, backboards, balls, timer, 
                 game_button, scoreboard, level) # Update the screen

@@ -22,8 +22,8 @@ class Timer():
 
     def countdown(self, bs):
         """Show the time left"""
-        time_passed = math.trunc(self.timer)
-        self.time_left = self.time_limit - time_passed        
+        time_passed = round(self.timer, 1)
+        self.time_left = round(bs.time_limit - time_passed, 1)      
         
     def blitme(self, bs, screen):
         """Blit timer on the screen"""
@@ -122,6 +122,8 @@ class Button():
 
     def draw_button(self):
         """Draw button with text"""
-
-        self.screen.fill(self.bg_color, self.rect)
+        
+        pygame.draw.circle(self.screen, self.bg_color, 
+                (int(self.screen_width / 2), int(self.screen_height / 2)), 80)
+        # self.screen.fill(self.bg_color, self.rect)
         self.screen.blit(self.text, self.text_rect)

@@ -96,13 +96,13 @@ def update_balls_number(screen, bs, balls):
 def create_backboard(screen, bs, backboards):
     """Generate backboards"""
     # Establishing available place in x direction
-    min_x = int(3 * bs.backboards_width/2 + bs.player_width/2 + 50)
-    max_x = int(bs.screen_width - 3*bs.backboards_width/2 - 
+    min_x = int(3 * bs.init_backboards_width/2 + bs.player_width/2 + 50)
+    max_x = int(bs.screen_width - 3*bs.init_backboards_width/2 - 
             bs.player_width/2 - 50)
     
     # Establishing available place in q direction
-    min_y = int(3*bs.backboards_height/2 + bs.player_height/2 + 50)
-    max_y = int(bs.screen_height - 3*bs.backboards_height/2 - 
+    min_y = int(3*bs.init_backboards_height/2 + bs.player_height/2 + 50)
+    max_y = int(bs.screen_height - 3*bs.init_backboards_height/2 - 
             bs.player_height - 50)
 
     # Generating random positions
@@ -150,13 +150,15 @@ def check_backboards(backboards):
     else:
         return False
 
-def next_level(screen, bs, backboards, timer):
+def next_level(screen, bs, backboards, timer, player):
     """Inceasing game level"""
     if check_backboards(backboards):
        create_backboard(screen, bs, backboards)
        bs.reset_mistakes()
        timer.reset_clock()
        bs.level_up()
+       bs.dynamic_settings()
+       # player.resize(bs)
     else:
         pass
  
@@ -174,7 +176,6 @@ def restart_game(timer, bs, screen, backboards, balls, player):
         backboards.empty()
         balls.empty()
         bs.reset_score()
-        bs.reset_level()
         create_backboard(screen, bs, backboards)
         player.restart(bs)
         bs.ball_mistakes_limit = bs.mistakes_limit
@@ -191,14 +192,14 @@ def player_update(player, bs):
     """Update position of the player"""
     player.update(bs)
 
-def backboards_update(screen, bs, backboards, balls, timer):
+def backboards_update(screen, bs, backboards, balls, timer, player):
     """Update position of all backboard"""
     
     # Remove backboards which were hit by ball
     remove_backboards(backboards, balls, bs)
     
     # Level up if no more backboards
-    next_level(screen, bs, backboards, timer)
+    next_level(screen, bs, backboards, timer, player)
 
 def update_screen(screen, bs, player, backboards, balls, timer, game_button,
         scoreboard, level):

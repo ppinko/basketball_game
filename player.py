@@ -37,7 +37,6 @@ class Player():
         self.min_y = bs.backboards_height + 50
         self.max_y = bs.screen_height - bs.backboards_height - 50
 
-
     def blitme(self):
         """Draw the player at its current position"""
         self.screen.blit(self.image, self.rect)
@@ -52,6 +51,22 @@ class Player():
             self.rect.centery -= bs.player_speed
         if self.move_down == True and self.rect.bottom <= self.max_y:
             self.rect.centery += bs.player_speed
+    
+#    def resize(self, bs):
+        """Resize the player when leveling up"""
+        
+#        # Saving temporary position
+#        temp_x = self.rect.centerx
+#        temp_y = self.rect.centery
+        
+        # Changing size of the image
+#        self.image = pygame.transform.scale(self.image, 
+#                (bs.player_width, bs.player_height))
+#        self.rect = self.image.get_rect()
+        
+        # Setting initial position of the player to the middle of the screen
+#        self.rect.centerx = temp_x
+#        self.rect.centery = temp_y
 
     def restart(self, bs):
         """When loosing a game restarts position of player"""
