@@ -18,4 +18,4 @@ To throw a ball in:
 - left direction press  -> a
 - right direction press -> d
 
-![alt text](https://github.com/ppinko/basketball_game/be_like_lebron.png)
+![be_like_lebron](https://user-images.githubusercontent.com/15100588/78503159-369ecb00-7765-11ea-97c8-039a236ea668.png)
