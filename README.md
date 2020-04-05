@@ -1,6 +1,6 @@
 # Basketball game called 'Be Like Lebron'
 
-Simple 2-D game imitating a game of basketball.
+Simple 2-D game imitating a game of basketball written using Python 3 and PyGame.
 
 To start a game left mouse click on 'Start' button.
 
